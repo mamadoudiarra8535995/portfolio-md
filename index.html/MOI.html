@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAMADOU DIARRA | Portfolio</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/css/intlTelInput.css"/>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#0f172a,#020617);
+color:white;
+padding:20px;
+}
+
+/* Carte principale */
+.card{
+width:100%;
+max-width:750px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(20px);
+border-radius:30px;
+padding:40px;
+box-shadow:0 0 60px rgba(0,0,0,0.6);
+display:flex;
+flex-direction:column;
+gap:40px;
+}
+
+/* Section profil */
+.profile-section{
+display:flex;
+align-items:center;
+gap:25px;
+flex-wrap:wrap;
+}
+
+.profile-section img{
+width:130px;
+height:130px;
+border-radius:50%;
+border:4px solid #3b82f6;
+object-fit:cover;
+}
+
+.profile-info h1{
+font-size:28px;
+margin-bottom:8px;
+}
+
+.profile-info p{
+color:#94a3b8;
+}
+
+/* Réseaux */
+.social-section{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:15px;
+}
+
+.social-btn{
+padding:14px;
+border-radius:14px;
+text-align:center;
+text-decoration:none;
+color:white;
+font-weight:bold;
+background:linear-gradient(135deg,#2563eb,#3b82f6);
+transition:0.3s;
+}
+
+.social-btn:hover{
+transform:translateY(-5px);
+box-shadow:0 0 25px rgba(59,130,246,0.7);
+}
+
+.social-btn i{
+margin-right:8px;
+}
+
+/* Contact */
+.contact-section{
+border-top:1px solid rgba(255,255,255,0.1);
+padding-top:30px;
+}
+
+.contact-section h3{
+margin-bottom:20px;
+font-size:20px;
+}
+
+form{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+form input{
+padding:12px;
+border-radius:12px;
+border:none;
+background:rgba(255,255,255,0.08);
+color:white;
+}
+
+button{
+padding:14px;
+border:none;
+border-radius:14px;
+font-weight:bold;
+cursor:pointer;
+background:linear-gradient(135deg,#3b82f6,#60a5fa);
+color:white;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.05);
+box-shadow:0 0 20px rgba(59,130,246,0.7);
+}
+
+#message{
+margin-top:10px;
+font-size:14px;
+}
+
+.footer{
+text-align:center;
+margin-top:20px;
+font-size:13px;
+color:#64748b;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<!-- PROFIL -->
+<div class="profile-section">
+<img src="moi.jpg">
+<div class="profile-info">
+<h1>MAMADOU DIARRA</h1>
+<p>Graphiste • Créateur • Développeur</p>
+</div>
+</div>
+
+<!-- RÉSEAUX -->
+<div class="social-section">
+<a class="social-btn" href="https://tiktok.com/@tonton_6ix" target="_blank">
+<i class="fab fa-tiktok"></i>TikTok
+</a>
+
+<a class="social-btn" href="https://instagram.com/tonton_6ix" target="_blank">
+<i class="fab fa-instagram"></i>Instagram
+</a>
+
+<a class="social-btn" href="https://snapchat.com/add/tonton_6ix" target="_blank">
+<i class="fab fa-snapchat"></i>Snapchat
+</a>
+
+<a class="social-btn" href="https://facebook.com/" target="_blank">
+<i class="fab fa-facebook"></i>Facebook
+</a>
+</div>
+
+<!-- CONTACT -->
+<div class="contact-section">
+<h3>Me contacter</h3>
+
+<form id="contactForm">
+<input type="text" id="nom" placeholder="Nom" required>
+<input type="text" id="prenom" placeholder="Prénom" required>
+<input type="tel" id="phone" placeholder="Numéro" required>
+<button type="submit">Envoyer</button>
+</form>
+
+<p id="message"></p>
+</div>
+
+<div class="footer">© 2026 Mamadou Diarra</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/intlTelInput.min.js"></script>
+
+<script>
+const input = document.querySelector("#phone");
+
+const iti = window.intlTelInput(input,{
+initialCountry:"auto",
+geoIpLookup:function(success,failure){
+fetch("https://ipapi.co/json")
+.then(res=>res.json())
+.then(data=>success(data.country_code))
+.catch(()=>success("ml"));
+},
+utilsScript:"https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js"
+});
+
+document.getElementById("contactForm").addEventListener("submit",function(e){
+e.preventDefault();
+
+let nom=document.getElementById("nom").value.trim();
+let prenom=document.getElementById("prenom").value.trim();
+let message=document.getElementById("message");
+
+if(!iti.isValidNumber()){
+message.style.color="red";
+message.innerHTML="Numéro invalide ❌";
+return;
+}
+
+let fullNumber=iti.getNumber();
+
+message.style.color="lightgreen";
+message.innerHTML="Redirection WhatsApp... 🚀";
+
+let fullMessage=`Nouveau contact:%0A Nom: ${nom}%0A Prénom: ${prenom}%0A Téléphone: ${fullNumber}`;
+
+setTimeout(()=>{
+window.open(`https://wa.me/22391303106?text=${fullMessage}`,"_blank");
+},1000);
+});
+</script>
+
+</body>
+</html>
